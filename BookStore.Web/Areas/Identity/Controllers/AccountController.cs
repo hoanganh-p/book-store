@@ -39,7 +39,16 @@ namespace BookStore.Web.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email.Split('@')[0], Email = model.Email, EmailConfirmed = true };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email.Split('@')[0],
+                    FullName = model.Email.Split('@')[0],
+                    Email = model.Email,
+                    EmailConfirmed = true,
+                    CreatedAt = DateTime.UtcNow, 
+                    Status = "Active"           
+                };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -105,25 +114,28 @@ namespace BookStore.Web.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: true);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.Email);
-                    var roles = await _userManager.GetRolesAsync(user);
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, false, lockoutOnFailure: true);
+                    if (result.Succeeded)
+                    {
+                        var roles = await _userManager.GetRolesAsync(user);
 
-                    if (roles.Contains("Admin"))
-                    {
-                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        }
+                        else if (roles.Contains("Customer"))
+                        {
+                            return LocalRedirect(returnUrl ?? Url.Content("~/"));
+                        }
                     }
-                    else if (roles.Contains("Customer"))
+                    if (result.IsLockedOut)
                     {
-                        return LocalRedirect(returnUrl ?? Url.Content("~/"));
+                        ModelState.AddModelError(string.Empty, "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau.");
+                        return View(model);
                     }
-                }
-                if (result.IsLockedOut)
-                {
-                    ModelState.AddModelError(string.Empty, "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau.");
-                    return View(model);
                 }
 
                 ModelState.AddModelError(string.Empty, "Tên tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại.");
@@ -131,6 +143,7 @@ namespace BookStore.Web.Areas.Identity.Controllers
 
             return View(model);
         }
+
 
         public IActionResult ExternalLogin(string provider, string? returnUrl = null)
         {
