@@ -1,0 +1,32 @@
+﻿@model IEnumerable<BookStore.Domain.Entities.Category>
+
+@{
+    ViewData["Title"] = "Categories List";
+}
+
+<h1>Categories</h1>
+
+<a asp-area="Admin" asp-action="Create" class="btn btn-primary">Create New Category</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.CategoryName</td>
+                <td>
+                    <a asp-area="Admin" asp-action="Details" asp-route-id="@category.CategoryID" class="btn btn-info">Details</a>
+                    <a asp-area="Admin" asp-action="Edit" asp-route-id="@category.CategoryID" class="btn btn-warning">Edit</a>
+                    <a asp-area="Admin" asp-action="Delete" asp-route-id="@category.CategoryID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

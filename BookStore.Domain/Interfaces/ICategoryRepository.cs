@@ -1,0 +1,9 @@
+﻿using BookStore.Domain.Entities;
+
+namespace BookStore.Domain.Interfaces
+{
+    public interface ICategoryRepository : IGenericRepository<Category>
+    {
+
+    }
+}

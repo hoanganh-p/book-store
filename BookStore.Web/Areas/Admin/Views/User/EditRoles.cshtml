@@ -1,0 +1,19 @@
+﻿@model BookStore.Web.Areas.Admin.Models.EditRolesViewModel
+
+<h2>Quản lý vai trò của @Model.UserName</h2>
+
+<form asp-action="EditRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div>
+        @for (int i = 0; i < Model.Roles.Count; i++)
+        {
+            <div>
+                <label>
+                    <input type="radio" name="selectedRole" value="@Model.Roles[i].RoleName" @(Model.Roles[i].IsSelected ? "checked" : "") />
+                    @Model.Roles[i].RoleName
+                </label>
+            </div>
+        }
+    </div>
+    <button type="submit">Lưu thay đổi</button>
+</form>

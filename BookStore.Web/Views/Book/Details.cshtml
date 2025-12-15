@@ -1,0 +1,43 @@
+﻿@model BookStore.Domain.Entities.Book
+
+<link href="~/css/bookdetails.css" rel="stylesheet" />
+
+<h2>@Model.Title</h2>
+
+<div class="book-details-container">
+    <div class="book-image">
+        <img src="@Model.ImageURL" alt="@Model.Title" class="book-img" />
+    </div>
+    <div class="book-info">
+        <div class="book-detail">
+            <strong>Tác giả:</strong> @Model.Author
+        </div>
+        <div class="book-detail">
+            <strong>Nhà xuất bản:</strong> @Model.Publisher
+        </div>
+        <div class="book-detail">
+            <strong>ISBN:</strong> @Model.ISBN
+        </div>
+        <div class="book-detail">
+            <strong>Giá:</strong> @Model.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))
+        </div>
+        <div class="book-detail">
+            <strong>Mô tả:</strong>
+            <p>@Model.Description</p>
+        </div>
+        <div class="book-detail">
+            <strong>Ngày phát hành:</strong> @Model.ReleaseDate?.ToString("dd/MM/yyyy")
+        </div>
+
+        <form method="post" asp-controller="Cart" asp-action="AddToCart" asp-route-bookid="@Model.BookID" class="add-to-cart-form">
+            <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
+        </form>
+    </div>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}

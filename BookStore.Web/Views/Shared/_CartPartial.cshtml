@@ -1,0 +1,42 @@
+﻿@using BookStore.Domain.Entities
+@using BookStore.Application.Interfaces
+@using BookStore.Infrastructure.Identity
+@using Microsoft.AspNetCore.Identity
+
+@inject ICartService CartService
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var userId = UserManager.GetUserId(User);
+    var cart = await CartService.GetCartAsync(userId);
+    if (cart != null && cart.Items.Any())
+    {
+        var totalItems = cart.Items.Sum(i => i.Quantity);
+        var totalPrice = cart.Items.Sum(i => i.Price * i.Quantity);
+
+        <a class="nav-link text-dark" href="@Url.Action("Index", "Cart")">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="badge bg-primary">@totalItems</span>
+        </a>
+    }
+    else
+    {
+        <a class="nav-link text-dark" href="@Url.Action("Index", "Cart")">
+            <i class="fa fa-shopping-cart"></i>
+        </a>
+    }
+}
+else
+{
+    <a class="nav-link text-dark" href="@Url.Action("Login", "Account", new { area = "Identity" })">
+        <i class="fa fa-shopping-cart"></i>
+    </a>
+}
+

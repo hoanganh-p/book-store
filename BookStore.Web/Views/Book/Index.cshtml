@@ -1,0 +1,66 @@
+﻿@model IEnumerable<BookStore.Domain.Entities.Book>
+
+@{
+    var categories = ViewData["Categories"] as List<BookStore.Domain.Entities.Category>; 
+}
+
+<link href="~/css/book.css" rel="stylesheet" />
+
+<form asp-action="Search" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm..." />
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="row">
+        <!-- Lọc theo thể loại -->
+        <div class="col">
+            <select name="categoryId" class="form-control">
+                <option value="">-- Chọn thể loại --</option>
+                @foreach (var category in categories)
+                {
+                        <option value="@category.CategoryID">@category.CategoryName</option>
+                }
+            </select>
+        </div>
+
+        <!-- Lọc theo khoảng giá -->
+        <div class="col">
+            <input type="number" name="minPrice" class="form-control" placeholder="Giá tối thiểu" />
+        </div>
+        <div class="col">
+            <input type="number" name="maxPrice" class="form-control" placeholder="Giá tối đa" />
+        </div>
+
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </div>
+</form>
+
+<h3>Danh Sách Sản Phẩm</h3>
+
+<div class="product-container">
+    @foreach (var book in Model)
+    {
+            <a asp-action="Details" asp-route-id="@book.BookID" class="product-card">
+                <div class="product-image">
+                @if (!string.IsNullOrEmpty(book.ImageURL))
+                {
+                    <img src="@book.ImageURL" alt="@book.Title" />
+                }
+                else
+                {
+                    <img src="/images/default-book-image.png" alt="Default Image" />
+                }
+                </div>
+                <div class="product-info">
+                    <h3>@book.Title</h3>
+                    <p>@book.Author</p>
+                    <p class="price">@book.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</p>
+                </div>
+            </a>
+    }
+</div>

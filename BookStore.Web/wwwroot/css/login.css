@@ -1,0 +1,217 @@
+﻿.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #555;
+        font-size: 16px;
+        text-align: left;
+        display: block;
+    }
+
+.form-control {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+/* Cải tiến cho ô mật khẩu */
+.password-wrapper {
+    position: relative;
+}
+
+.input-group-append {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Nút đăng nhập */
+.btn-block {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+    .btn-block:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px); 
+    }
+
+    .btn-block:active {
+        transform: translateY(1px);
+    }
+
+/* Thông báo lỗi */
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #f5c6cb;
+}
+
+    .alert-danger p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+/* Icon mắt */
+.input-group-text {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+    .input-group-text i {
+        font-size: 18px;
+        color: #666;
+    }
+
+.forgot-password {
+    text-align: right;
+}
+
+    .forgot-password a {
+        font-size: 14px;
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .forgot-password a:hover {
+            color: #0056b3;
+        }
+
+
+.divider {
+    text-align: center;
+    position: relative;
+    margin: 15px 0;
+}
+
+    .divider hr {
+        border: none;
+        border-top: 1px solid #000;
+        margin: 0;
+        position: absolute;
+        width: 100%;
+        top: 50%;
+    }
+
+    .divider span {
+        background-color: #f9f9f9;
+        font-weight: 300;
+        padding: 0 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+/* Cập nhật các nút đăng nhập với Facebook và Google */
+.btn-social-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-facebook, .btn-google {
+    width: 48%; 
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-facebook:hover, .btn-google:hover {
+        transform: translateY(-2px);
+    }
+
+.btn-facebook {
+    background-color: #3b5998;
+}
+
+    .btn-facebook:hover {
+        background-color: #2d4373;
+    }
+
+.btn-google {
+    background-color: #db4437;
+}
+
+    .btn-google:hover {
+        background-color: #c1351d;
+    }
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .login-container {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .login-title {
+        font-size: 24px;
+    }
+
+    .form-control {
+        font-size: 14px;
+    }
+
+    .btn-block {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Điều chỉnh các nút Facebook và Google khi màn hình nhỏ */
+    .btn-social-container {
+        flex-direction: column;
+    }
+
+    .btn-facebook, .btn-google {
+        width: 100%; /* Chiều rộng 100% khi màn hình nhỏ */
+    }
+}

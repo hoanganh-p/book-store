@@ -1,0 +1,84 @@
+﻿/* Style cho trang chi tiết sách */
+.book-details-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-image {
+    flex: 1;
+    max-width: 300px;
+    margin-right: 20px;
+}
+
+.book-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.book-info {
+    flex: 2;
+    max-width: 600px;
+}
+
+.book-detail {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+    .book-detail strong {
+        font-weight: bold;
+    }
+
+    .book-detail p {
+        margin-top: 5px;
+        font-size: 14px;
+        color: #555;
+    }
+
+.add-to-cart-form {
+    margin-top: 20px;
+}
+
+.quantity-container {
+    margin-bottom: 10px;
+}
+
+    .quantity-container label {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .quantity-container input {
+        padding: 5px;
+        width: 60px;
+        font-size: 14px;
+    }
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .btn:hover {
+        background-color: #2980b9;
+    }
+
+.alert {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #e74c3c;
+}

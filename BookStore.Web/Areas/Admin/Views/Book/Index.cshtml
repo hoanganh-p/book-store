@@ -1,0 +1,60 @@
+﻿@model IEnumerable<BookStore.Domain.Entities.Book>
+
+<h1>Books</h1>
+
+<form asp-action="Search" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="keyword" class="form-control" placeholder="Sreach..." />
+        <button type="submit" class="btn btn-primary">Sreach</button>
+    </div>
+</form>
+
+<a asp-area="Admin" asp-action="Create" class="btn btn-primary">Add New Book</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>
+
+                    @if (!string.IsNullOrEmpty(book.ImageURL))
+                    {
+                        <img src="@book.ImageURL" alt="Image of @book.Title" style="width: 100px; height: auto;" />
+                    }
+                    else
+                    {
+                        <span>No image</span>
+                    }
+                </td>
+                <td>
+                    @foreach (var category in ViewData["Categories"] as List<BookStore.Domain.Entities.Category> ?? new List<BookStore.Domain.Entities.Category>())
+                    {
+                        if (category.CategoryID == book.CategoryID)
+                        {
+                            <span>@category.CategoryName</span>
+                        }
+                    }
+                </td>
+                <td>@book.Author</td>
+                <td>@book.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                <td class="d-flex justify-content-start" style="gap: 4px;">
+                    <a asp-action="Details" asp-route-id="@book.BookID" class="btn btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@book.BookID" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@book.BookID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

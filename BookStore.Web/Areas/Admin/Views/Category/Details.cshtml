@@ -1,0 +1,17 @@
+﻿@model BookStore.Domain.Entities.Category
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<h1>Category Details</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Name: @Model.CategoryName</h5>
+        <p class="card-text">Description: @Model.Description</p>
+    </div>
+</div>
+
+<a asp-area="Admin" asp-action="Edit" asp-route-id="@Model.CategoryID" class="btn btn-warning">Edit</a>
+<a asp-area="Admin" asp-action="Index" class="btn btn-primary">Back to List</a>

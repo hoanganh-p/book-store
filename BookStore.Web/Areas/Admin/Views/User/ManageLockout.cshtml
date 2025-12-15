@@ -1,0 +1,32 @@
+﻿@model BookStore.Infrastructure.Identity.ApplicationUser
+
+<h2>Quản lý trạng thái tài khoản của @Model.UserName</h2>
+
+<div>
+    <p>Email: @Model.Email</p>
+    <p>
+        Trạng thái khóa:
+        @if (Model.LockoutEnd.HasValue && Model.LockoutEnd > DateTime.UtcNow)
+        {
+            <span class="text-danger">Đang bị khóa</span>
+        }
+        else
+        {
+            <span class="text-success">Không bị khóa</span>
+        }
+    </p>
+</div>
+
+@if (Model.LockoutEnd.HasValue && Model.LockoutEnd > DateTime.UtcNow)
+{
+    <form method="post" asp-action="UnlockAccount" asp-route-userId="@Model.Id">
+        <button type="submit" class="btn btn-warning">Mở khóa tài khoản</button>
+    </form>
+}
+
+@if (!Model.LockoutEnd.HasValue || Model.LockoutEnd <= DateTime.UtcNow)
+{
+    <form method="post" asp-action="LockAccount" asp-route-userId="@Model.Id">
+        <button type="submit" class="btn btn-danger">Khóa tài khoản</button>
+    </form>
+}

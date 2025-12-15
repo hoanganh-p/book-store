@@ -1,0 +1,39 @@
+﻿@model BookStore.Domain.Entities.Cart
+
+<h3>Giỏ hàng của bạn</h3>
+
+<form method="post" asp-action="UpdateItemQuantity" class="cart-form">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Book.Title</td>
+                    <td>
+                        <input type="number" name="quantities[@item.CartItemID]" value="@item.Quantity" min="1" class="form-control" />
+                    </td>
+                    <td>@item.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                    <td>@item.TotalPrice.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                    <td>
+                        <form method="post" asp-action="RemoveFromCart" style="display:inline;">
+                            <input type="hidden" name="itemId" value="@item.CartItemID" />
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Cập nhật giỏ hàng</button>
+</form>
+
+<h4>Tổng tiền: @Model.TotalPrice.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</h4>
