@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;
 
 namespace BookStore.Web.Areas.Identity.Controllers
@@ -155,55 +156,57 @@ namespace BookStore.Web.Areas.Identity.Controllers
         public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? error = null)
         {
             if (error != null)
-            {
-                ModelState.AddModelError(string.Empty, $"Error from external provider: {error}");
                 return RedirectToAction("Login");
-            }
 
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
-            {
                 return RedirectToAction("Login");
-            }
 
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
-            if (result.Succeeded)
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(
+                info.LoginProvider,
+                info.ProviderKey,
+                isPersistent: false
+            );
+
+            if (signInResult.Succeeded)
             {
-                var user = await _userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
-                var roles = await _userManager.GetRolesAsync(user);
-
-                if (roles.Contains("Admin"))
-                {
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
-                }
-                else
-                {
-                    return LocalRedirect(returnUrl ?? Url.Content("~/"));
-                }
+                return LocalRedirect(returnUrl ?? "/");
             }
-            else
+
+            // ==== TẠO USER MỚI ====
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var fullName = info.Principal.FindFirstValue(ClaimTypes.Name);
+
+            if (email == null)
+                return RedirectToAction("Login");
+
+            var user = new ApplicationUser
             {
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                var user = new ApplicationUser { UserName = email?.Split('@')[0], Email = email };
+                UserName = email,
+                Email = email,
+                FullName = fullName,
+                Status = "Active",
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
+            };
 
-                var createResult = await _userManager.CreateAsync(user);
-                await _userManager.AddToRoleAsync(user, "Customer");
-                if (createResult.Succeeded)
-                {
-                    await _userManager.AddLoginAsync(user, info);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl ?? Url.Content("~/"));
-                }
-                else
-                {
-                    foreach (var err in createResult.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, err.Description);
-                    }
-                    return View("Login");
-                }
+            var createResult = await _userManager.CreateAsync(user);
+            if (!createResult.Succeeded)
+            {
+                foreach (var err in createResult.Errors)
+                    ModelState.AddModelError("", err.Description);
+
+                return View("Login");
             }
+
+            await _userManager.AddLoginAsync(user, info);
+            await _userManager.AddToRoleAsync(user, "Customer");
+            await _signInManager.SignInAsync(user, false);
+
+            return LocalRedirect(returnUrl ?? "/");
         }
+
+
 
         public async Task<IActionResult> Logout()
         {

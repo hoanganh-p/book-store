@@ -101,17 +101,23 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-app.MapAreaControllerRoute(
-    name: "admin",
-    areaName: "Admin",
-    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+//app.MapAreaControllerRoute(
+//    name: "admin",
+//    areaName: "Admin",
+//    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+//);
+
+//app.MapAreaControllerRoute(
+//    name: "identity",
+//    areaName: "Identity",
+//    pattern: "Identity/{controller=Account}/{action=Login}/{id?}"
+//);
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
 );
 
-app.MapAreaControllerRoute(
-    name: "identity",
-    areaName: "Identity",
-    pattern: "Identity/{controller=Account}/{action=Login}/{id?}"
-);
 
 app.MapControllerRoute(
     name: "default",
