@@ -173,7 +173,7 @@ namespace BookStore.Web.Areas.Identity.Controllers
                 return LocalRedirect(returnUrl ?? "/");
             }
 
-            // ==== TẠO USER MỚI ====
+            // Create new user
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var fullName = info.Principal.FindFirstValue(ClaimTypes.Name);
 
